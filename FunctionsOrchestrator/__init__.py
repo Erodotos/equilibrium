@@ -6,12 +6,15 @@
 # - add azure-functions-durable to requirements.txt
 # - run pip install -r requirements.txt
 
+import os
 import requests
 import logging
 import json
 
 import azure.functions as func
 import azure.durable_functions as df
+
+from jinja2 import Environment, FileSystemLoader
 
 
 def fetch_all_trading_pairs():
@@ -29,12 +32,21 @@ def fetch_all_trading_pairs():
         return trading_pairs
     else:
         logging.error(f'Failed to fetch all trading pairs. Error: {response.status_code}')
-        return None    
+        return None   
+
+def render_static_website(data):
+
+    env = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__)) + '/templates'), trim_blocks=True)
+    template = env.get_template("index.html")
+  
+    rendered_html = template.render(data=data)
+
+    return rendered_html 
 
 def orchestrator_function(context: df.DurableOrchestrationContext):
-    all_pairs = fetch_all_trading_pairs()[:10]
+    all_pairs = fetch_all_trading_pairs()
 
-    batch_size=2
+    batch_size=50
     number_of_batches=int(len(all_pairs)/batch_size)
 
     parallel_tasks = [ context.call_activity("Activity",  all_pairs[i * batch_size: min((i + 1) * batch_size, len(all_pairs))]) for i in range(number_of_batches) ]
@@ -45,7 +57,9 @@ def orchestrator_function(context: df.DurableOrchestrationContext):
         trading_pairs.extend(sublist)
 
     print(trading_pairs)
+
+    website = render_static_website(trading_pairs)
    
-    return outputs
+    return website
 
 main = df.Orchestrator.create(orchestrator_function)

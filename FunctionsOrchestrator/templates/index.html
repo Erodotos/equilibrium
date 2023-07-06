@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Equilibrium Markets</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="container mt-3">
+
+        <nav class="navbar navbar-expand-lg border-bottom">
+            <a class="navbar-brand" href="#">Equilibrium Markets</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item mx-2">
+                        <button class="nav-link btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#howToModal"><strong>How To</strong></button>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <button class="nav-link btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#aboutModal"><strong>About</strong></button>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <button class="nav-link btn btn-warning" type="button"><strong>Support</strong></button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="modal modal-dialog-scrollable modal-lg fade" id="howToModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">How To</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal modal-dialog-scrollable modal-lg fade" id="aboutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">About</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-lg-4 col-md-6 mx-auto">
+                <form class="d-flex">
+                    <input id="search" class="form-control me-2" type="search" placeholder="Search">
+                </form>
+                <div id="filters" class="d-flex justify-content-start align-items-center text-center mt-2">
+                    <span style="font-size: 1rem;">Filter Charts:</span>
+                    <button id="filter-green" type="button" class="btn btn-outline-success mx-1 py-0" style="--bs-btn-font-size: .9rem;">#green</button>
+                    <button id="filter-red" type="button" class="btn btn-outline-danger mx-1 py-0" style="--bs-btn-font-size: .9rem;">#red</button>
+                    <button id="filter-gray" type="button" class="btn btn-outline-secondary mx-1 py-0" style="--bs-btn-font-size: .9rem;">#gray</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <table id="table" class="table table-hover text-center">
+                    <thead class="sticky-top">
+                        <tr>
+                            <th>Symbol</th>
+                            <th class="d-none d-md-table-cell">Date</th>
+                            <th>Price (USD)</th>
+                            <th class="d-none d-md-table-cell">Volume</th>
+                            <th class="d-none d-md-table-cell">Chart Age (Weeks)</th>
+                            <th>View Chart</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pair in data %}
+                        <tr>
+                            <td class="align-middle">{{ pair.Symbol }}</td>
+                            <td class="align-middle d-none d-md-table-cell">{{ pair.Date }}</td>
+                            <td class="align-middle">{{ pair.Price }}</td>
+                            <td class="align-middle d-none d-md-table-cell">{{ pair.Volume }}</td>
+                            <td class="align-middle d-none d-md-table-cell">{{ pair.ChartAge }}</td>
+                            <td class="align-middle">
+                                {% if pair.Status == "gray" %}
+                                <a href="{{ 'https://www.tradingview.com/chart/?symbol=BINANCE:%s' %pair.Symbol }}" target="_blank" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-right-circle-fill"></i>
+                                </a>
+                                {% elif pair.Status == "green" %}
+                                <a href="{{ 'https://www.tradingview.com/chart/?symbol=BINANCE:%s' %pair.Symbol }}" target="_blank" class="btn btn-success">
+                                    <i class="bi bi-arrow-up-right-circle-fill"></i>
+                                </a>
+                                {% elif pair.Status == "red" %}
+                                <a href="{{ 'https://www.tradingview.com/chart/?symbol=BINANCE:%s' %pair.Symbol }}" target="_blank" class="btn btn-danger">
+                                    <i class="bi bi-arrow-down-right-circle-fill"></i>
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+
+            // Search Bar
+            $("#search").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#table tbody tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+
+            // Filter buttons search
+            $("#filter-green").click(function() {
+                if ($("#filter-red").hasClass("active") || $("#filter-gray").hasClass("active")) {
+                    $("#table tbody tr").show();
+                    $("#filter-red").removeClass("active");
+                    $("#filter-gray").removeClass("active");
+                }
+                $("#table tbody tr").filter(function() {
+                    return !$(this).find("td:eq(5) a").hasClass("btn-success");
+                }).toggle();
+                $(this).toggleClass("active");
+            });
+            $("#filter-red").click(function() {
+                if ($("#filter-green").hasClass("active") || $("#filter-gray").hasClass("active")) {
+                    $("#table tbody tr").show();
+                    $("#filter-green").removeClass("active");
+                    $("#filter-gray").removeClass("active");
+                }
+                $("#table tbody tr").filter(function() {
+                    return !$(this).find("td:eq(5) a").hasClass("btn-danger");
+                }).toggle();
+                $(this).toggleClass("active");
+            });
+            $("#filter-gray").click(function() {
+                if ($("#filter-red").hasClass("active") || $("#filter-green").hasClass("active")) {
+                    $("#table tbody tr").show();
+                    $("#filter-green").removeClass("active");
+                    $("#filter-red").removeClass("active");
+                }
+                $("#table tbody tr").filter(function() {
+                    return !$(this).find("td:eq(5) a").hasClass("btn-secondary");
+                }).toggle();
+                $(this).toggleClass("active");
+            });
+
+
+            // // Filter buttons toggle
+            // $("#filter-green").click(function() {
+            //     $(this).toggleClass("active");
+            //     if ($("#filter-red").hasClass("active")) {
+            //         $("#filter-red").toggleClass("active");
+            //     }
+            //     if ($("#filter-gray").hasClass("active")) {
+            //         $("#filter-gray").toggleClass("active");
+            //     }
+            // });
+            // $("#filter-red").click(function() {
+            //     $(this).toggleClass("active");
+            //     if ($("#filter-green").hasClass("active")) {
+            //         $("#filter-green").toggleClass("active");
+            //     }
+            //     if ($("#filter-gray").hasClass("active")) {
+            //         $("#filter-gray").toggleClass("active");
+            //     }
+            // });
+            // $("#filter-gray").click(function() {
+            //     $(this).toggleClass("active");
+            //     if ($("#filter-red").hasClass("active")) {
+            //         $("#filter-red").toggleClass("active");
+            //     }
+            //     if ($("#filter-green").hasClass("active")) {
+            //         $("#filter-green").toggleClass("active");
+            //     }
+            // });
+        });
+    </script>
+
+</body>
+
+</html>

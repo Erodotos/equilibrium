@@ -64,10 +64,10 @@ def get_trading_pair_details(symbol):
     
     return None
 
-def main(name: list) -> list:
+def main(pairs: list) -> list:
 
     trading_pairs = list()
-    for pair in name:
+    for pair in pairs:
 
         pair_details = get_trading_pair_details(pair)
         if pair_details is None:
