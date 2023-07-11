@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html data-bs-theme="dark" lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Equilibrium Markets</title>
+    <title>Equilibrium</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -14,20 +14,17 @@
     <div class="container mt-3">
 
         <nav class="navbar navbar-expand-lg border-bottom">
-            <a class="navbar-brand" href="#">Equilibrium Markets</a>
+            <a class="navbar-brand" href="#">Equilibrium</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item mx-2">
-                        <button class="nav-link btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#howToModal"><strong>How To</strong></button>
+                        <button class="nav-link btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#howToModal"><strong>How To</strong></button>
                     </li>
                     <li class="nav-item mx-2">
-                        <button class="nav-link btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#aboutModal"><strong>About</strong></button>
-                    </li>
-                    <li class="nav-item mx-2">
-                        <button class="nav-link btn btn-warning" type="button"><strong>Support</strong></button>
+                        <button class="nav-link btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#aboutModal"><strong>About</strong></button>
                     </li>
                 </ul>
             </div>
@@ -41,7 +38,16 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        ...
+                        <p>
+                            For optimal use of this tool, it is recommended to include the following Pine Script to your Trading View Account. Note that if you open this app from a mobile device, you might not see all the data, or the redirection button won't work properly. Use
+                            a laptop's web browser for the full experience.
+                        </p>
+
+                        <script src="https://gist.github.com/Erodotos/a67bec6ebbaa186e5cc46b640acd89fd.js"></script>
+
+                        <p>
+                            You are ready to go 🙂. Use the search bar on the top of your screen to find your favourite coin, or apply any of the provided filters to check bullish or bearish coins.
+                        </p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -58,7 +64,20 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        ...
+                        <p>
+                            Introducing Equilibrium, a comprehensive trend analysis tool for the cryptocurrency long-term investor. The application combines cutting-edge technology with a well-known trading indicator (let's call it "Golden Line" ... read the full story
+                            <a href="https://www.tradingview.com/script/8bjulALc-Andres-Line/">here</a>) to provide valuable insights on buy and sell opportunities in the ever-evolving cryptocurrency market.
+                        </p>
+
+                        <p>
+                            Operating on weekly candle sticks, Equilibrium fetches data directly from the renowned Binance exchange for all trading pairs. Afterwards, it applies the "Golden Line" indicator allowing you to identify trends and make informed trading decisions.
+                        </p>
+
+                        <p>
+                            Equilibrium's heart lies in its intuitive dashboard, which presents a list of analyzed trading pairs. With a glance, you can see whether a crypto coin is bullish, bearish, or in the grey zone. Furthermore, the dashboard offers essential information, such
+                            as the chart age, asset price, and volume regarding the latest week's candle close.x
+                        </p>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -128,17 +147,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function() {
-
-            // Search Bar
             $("#search").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
                 $("#table tbody tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
-
-
-            // Filter buttons search
             $("#filter-green").click(function() {
                 if ($("#filter-red").hasClass("active") || $("#filter-gray").hasClass("active")) {
                     $("#table tbody tr").show();
@@ -172,36 +186,6 @@
                 }).toggle();
                 $(this).toggleClass("active");
             });
-
-
-            // // Filter buttons toggle
-            // $("#filter-green").click(function() {
-            //     $(this).toggleClass("active");
-            //     if ($("#filter-red").hasClass("active")) {
-            //         $("#filter-red").toggleClass("active");
-            //     }
-            //     if ($("#filter-gray").hasClass("active")) {
-            //         $("#filter-gray").toggleClass("active");
-            //     }
-            // });
-            // $("#filter-red").click(function() {
-            //     $(this).toggleClass("active");
-            //     if ($("#filter-green").hasClass("active")) {
-            //         $("#filter-green").toggleClass("active");
-            //     }
-            //     if ($("#filter-gray").hasClass("active")) {
-            //         $("#filter-gray").toggleClass("active");
-            //     }
-            // });
-            // $("#filter-gray").click(function() {
-            //     $(this).toggleClass("active");
-            //     if ($("#filter-red").hasClass("active")) {
-            //         $("#filter-red").toggleClass("active");
-            //     }
-            //     if ($("#filter-green").hasClass("active")) {
-            //         $("#filter-green").toggleClass("active");
-            //     }
-            // });
         });
     </script>
 

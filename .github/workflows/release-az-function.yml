@@ -2,12 +2,16 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure Functions: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python project to Azure Function App - eq-euw-fa
+name: Build and deploy Azure Function App
 
 on:
   push:
     branches:
       - master
+    paths:
+      - 'Activity/**'
+      - 'FunctionsOrchestrator/**'
+      - 'HttpStart/**'
   workflow_dispatch:
 
 env:

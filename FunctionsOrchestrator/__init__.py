@@ -56,7 +56,7 @@ def orchestrator_function(context: df.DurableOrchestrationContext):
     for sublist in outputs:
         trading_pairs.extend(sublist)
 
-    print(trading_pairs)
+    # print(trading_pairs)
 
     website = render_static_website(trading_pairs)
    

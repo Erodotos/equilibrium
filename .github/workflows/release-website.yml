@@ -1,0 +1,67 @@
+name: Generate and Publish Artifacts
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Environment
+        required: true
+        default: 'master'
+        type: choice
+        options:
+          - master
+          - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Generate and Publish Artifacts
+        env:
+          API_KEY:  ${{ secrets.API_KEY_GITHUB }}
+          ENV: ${{ inputs.environment }}
+        run: |
+          functionTrigger=$(curl -sSL "https://eq-euw-fa.azurewebsites.net/api/orchestrators/FunctionsOrchestrator")
+          
+          while true ; do
+            statusCheckURL=$(echo "$functionTrigger" | jq -r '.statusQueryGetUri')
+            echo Waiting ... $statusCheckURL
+            status=$(curl -sSL "$statusCheckURL" | jq -r '.runtimeStatus') 
+
+            if [[ "$status" == "Completed" ]]; then
+              curl -sSL "$statusCheckURL" | jq -r '.output' |  tr -d '\n' | base64 -w0 | sed 's/.*/"&"/' > website
+              echo "Website Generated Successfully!"
+              break 
+            fi
+
+            sleep 5
+          done
+
+
+          response=$(curl -sSL "https://api.github.com/repos/Erodotos/equilibrium/contents/docs/index.html" --header "Content-Type: application/vnd.github+json" --header "ref: $ENV" --header "Authorization: $API_KEY")
+
+          sha=$(echo "$response" | jq -r '.sha')
+
+          jq -n --arg msg "Automated Push from Azure Functions" \
+            --argfile content website \
+            --arg branch "$ENV" \
+            --arg sha "$sha" \
+            '{ message: $msg, content: $content, branch: $branch, sha: $sha }' > payload.json
+
+          response=$(curl -sSL --request PUT "https://api.github.com/repos/Erodotos/equilibrium/contents/docs/index.html" \
+          --header "Content-Type: application/vnd.github+json" \
+          --header "ref: $ENV" --header "Authorization: $API_KEY" \
+          --write-out %{http_code} \
+          --output /dev/null \
+          --data @payload.json)
+
+          if [ "$response" == "200" ] || [ "$response" == "201" ]; then
+            echo "Code successfully pushed to GitHub"
+          else
+            echo "Failed to push code to GitHub. Error: $response"
+          fi
