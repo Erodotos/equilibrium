@@ -8,11 +8,10 @@ on:
       environment:
         description: Environment
         required: true
-        default: 'master'
+        default: 'prod'
         type: choice
         options:
-          - master
-          - dev
+          - prod
 
 jobs:
   build:
