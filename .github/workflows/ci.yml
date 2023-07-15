@@ -5,10 +5,11 @@
 name: CI Azure Function App
 
 on:
-  push:
-    path: 'HttpTrigger/**'
-    branches:
+  pull_request:
+    branches:    
       - prod
+    paths:
+      - 'HttpTrigger/**'
   workflow_dispatch:
 
 env:
@@ -22,8 +23,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Install Node.js and npm
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Azure Functions Core Tools
+        run: npm install -g azure-functions-core-tools@latest
+
       - name: Setup Python version
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -34,13 +43,8 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
-        
-      # Optional: Add step to run tests here
 
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
-        with:
-          name: python-app
-          path: |
-            . 
-            !venv/
+      - name: Build App
+        run: |
+          func build
+          func package --output ./package.zip
