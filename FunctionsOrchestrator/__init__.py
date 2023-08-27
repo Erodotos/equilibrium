@@ -26,7 +26,7 @@ def fetch_all_trading_pairs():
         trading_pairs = []
         symbols = data["symbols"]
         for symbol in symbols:
-            if symbol["quoteAsset"] == "USDT":
+            if symbol["quoteAsset"] == "USDT" or symbol["quoteAsset"] == "BTC" :
                 trading_pairs.append(symbol["symbol"])
 
         return trading_pairs
