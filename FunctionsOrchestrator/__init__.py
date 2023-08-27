@@ -46,6 +46,8 @@ def render_static_website(data):
 def orchestrator_function(context: df.DurableOrchestrationContext):
     all_pairs = fetch_all_trading_pairs()
 
+    print(len(all_pairs))
+
     batch_size=50
     number_of_batches=int(len(all_pairs)/batch_size)
 
