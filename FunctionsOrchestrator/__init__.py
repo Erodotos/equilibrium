@@ -48,7 +48,7 @@ def orchestrator_function(context: df.DurableOrchestrationContext):
 
     print(len(all_pairs))
 
-    batch_size=50
+    batch_size=25
     number_of_batches=int(len(all_pairs)/batch_size)
 
     parallel_tasks = [ context.call_activity("Activity",  all_pairs[i * batch_size: min((i + 1) * batch_size, len(all_pairs))]) for i in range(number_of_batches) ]
