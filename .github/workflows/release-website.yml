@@ -23,7 +23,7 @@ jobs:
           repository: Erodotos/equilibrium
           token: ${{ secrets.API_KEY_GITHUB_2 }}
 
-      - name: Setup Python
+      - name: Install Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10' # install the python version needed
@@ -38,7 +38,7 @@ jobs:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: python indicators/social.py
 
-      - name: Commit Generated Charts
+      - name: Commit and Push Generated Charts
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
