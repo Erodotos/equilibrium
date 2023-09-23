@@ -37,8 +37,8 @@ jobs:
 
       - name: Commit Generated Charts
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.email "erodotosd@gmail.com"
+          git config --local user.name "Erodotos Demetriou"
           git add -A
           git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
           git push https://erodotos:${{ secrets.GITHUB_TOKEN }}@github.com/Erodotos/equilibrium.git
