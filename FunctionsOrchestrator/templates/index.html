@@ -96,7 +96,21 @@
             </div>
         </div>
 
-        <div class="row mt-5">
+
+        <div class="row justify-content-center mt-5">
+            <div class="dropdown-center col-auto">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                  Indicators
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                  <li><a class="dropdown-item active" id="trend-analyser-link">Trend Analyser</a></li>
+                  <li><a class="dropdown-item"  id="social-indicator-link">Social Indicator</a></li>
+                </ul>
+              </div>
+        </div>
+
+
+        <div class="row mt-5" id="search-bar">
             <div class="col-lg-4 col-md-6 mx-auto">
                 <form class="d-flex">
                     <input id="search" class="form-control me-2" type="search" placeholder="Search">
@@ -110,7 +124,7 @@
             </div>
         </div>
 
-        <div class="row mt-5">
+        <div class="row mt-5" id="trend-analysis">
             <div class="col-12">
                 <table id="table" class="table table-hover text-center">
                     <thead class="sticky-top">
@@ -124,7 +138,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for pair in data %}
+                        {% for pair in data["trend"] %}
                         <tr>
                             <td class="align-middle">{{ pair.Symbol }}</td>
                             <td class="align-middle d-none d-md-table-cell">{{ pair.Date }}</td>
@@ -145,6 +159,41 @@
                                     <i class="bi bi-arrow-down-right-circle-fill"></i>
                                 </a>
                                 {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row mt-5" id="social-indicator"  style="display: none;">
+            <div class="col-12">
+                <table id="table" class="table table-hover text-center">
+                    <thead class="sticky-top">
+                        <tr>
+                            <th>Channel</th>
+                            <th>Subscribers</th>
+                            <th>Views</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for channel in data["social"] %}
+                        <tr>
+                            <td class="align-middle">
+                                <a href="{{ 'https://www.youtube.com/channel/%s' %channel.id }}"  target="_blank" class="btn btn-warning">
+                                    {{ channel.name }}
+                                </a>
+                            </td>
+                            <td class="align-middle">
+                                <a href="{{ './charts/subs/%s.html' %channel.name }}" target="_blank" class="btn btn-danger">
+                                    {{ channel.subscribers[0].count }}
+                                </a>
+                            </td>
+                            <td class="align-middle">
+                                <a href="{{ './charts/views/%s.html' %channel.name }}" target="_blank" class="btn btn-danger">
+                                    {{ channel.views[0].count }}
+                                </a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -196,6 +245,20 @@
                 }).toggle();
                 $(this).toggleClass("active");
             });
+            $(".dropdown-menu li #trend-analyser-link").click(function(){
+                $(".dropdown-menu li a").removeClass('active');
+                $(this).addClass('active');
+                $("#search-bar").show();
+                $("#trend-analysis").show();
+                $("#social-indicator").hide();
+            })
+            $(".dropdown-menu li #social-indicator-link").click(function(){
+                $(".dropdown-menu li a").removeClass('active');
+                $(this).addClass('active');
+                $("#social-indicator").show();
+                $("#search-bar").hide();
+                $("#trend-analysis").hide();
+            })
         });
     </script>
 

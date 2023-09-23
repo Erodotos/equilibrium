@@ -58,9 +58,22 @@ def orchestrator_function(context: df.DurableOrchestrationContext):
     for sublist in outputs:
         trading_pairs.extend(sublist)
 
-    # print(trading_pairs)
+    # load chart data
 
-    website = render_static_website(trading_pairs)
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    print(dir_path)
+    social_data=[]
+    json_file_name = "docs/channels-data.json"
+    with open(json_file_name, "r") as json_file:
+        social_data = json.load(json_file)
+
+
+
+
+    data=dict()
+    data["trend"]= trading_pairs
+    data["social"]=social_data
+    website = render_static_website(data)
    
     return website
 
