@@ -19,9 +19,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          repository: Erodotos/equilibrium
-          token: ${{ secrets.API_KEY_GITHUB }}
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -44,7 +41,15 @@ jobs:
           git config --local user.name "GitHub Action"
           git add -A
           git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
-          git push
+          git push https://erodotos:${{ secrets.GITHUB_TOKEN }}@github.com/Erodotos/equilibrium.git
+
+      # - name: Manual push
+      #   run: |
+      #     cd equilibrium
+      #     git config --local user.email "github-actions@erodotos.noreply.github.com"
+      #     git config --local user.name "github-actions"
+      #     git diff-index --quiet HEAD || git commit -a -m "Test"
+      #     gut push https://<any-user_or_app-id>:<token>@github.com/user_or_org/repo.git
 
       # - name: Push Charts
       #   uses: ad-m/github-push-action@master
