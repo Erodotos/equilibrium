@@ -41,12 +41,13 @@ jobs:
           git config --local user.name "GitHub Action"
           git add -A
           git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
+          git push
 
-      - name: Push Charts
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.API_KEY_GITHUB }}
-          branch: "prod" 
+      # - name: Push Charts
+      #   uses: ad-m/github-push-action@master
+      #   with:
+      #     github_token: ${{ secrets.API_KEY_GITHUB }}
+      #     branch: "prod" 
 
       - name: Generate Golden Line Indicator and Publish Artifacts
         env:
