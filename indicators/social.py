@@ -14,7 +14,7 @@ def fetch_latest_data() -> list:
     youtube = build(api_service_name, api_version, developerKey=API_KEY)
 
     data=[]
-    json_file_name = "channels-data.json"
+    json_file_name = "docs/channels-data.json"
 
     with open(json_file_name, "r") as json_file:
         data = json.load(json_file)
