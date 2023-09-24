@@ -181,17 +181,17 @@
                         {% for channel in data["social"] %}
                         <tr>
                             <td class="align-middle">
-                                <a href="{{ 'https://www.youtube.com/channel/%s' %channel.id }}"  target="_blank" class="btn btn-warning">
+                                <a href="{{ 'https://www.youtube.com/channel/%s' %channel.id }}"  target="_blank">
                                     {{ channel.name }}
                                 </a>
                             </td>
                             <td class="align-middle">
-                                <a href="{{ './charts/subs/%s.html' %channel.name }}" target="_blank" class="btn btn-danger">
+                                <a href="{{ './charts/subs/%s.html' %channel.name }}" target="_blank" class="btn btn-success">
                                     {{ channel.subscribers[0].count }}
                                 </a>
                             </td>
                             <td class="align-middle">
-                                <a href="{{ './charts/views/%s.html' %channel.name }}" target="_blank" class="btn btn-danger">
+                                <a href="{{ './charts/views/%s.html' %channel.name }}" target="_blank" class="btn btn-warning">
                                     {{ channel.views[0].count }}
                                 </a>
                             </td>
